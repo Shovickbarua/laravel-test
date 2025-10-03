@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendWelcomeEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -35,6 +36,8 @@ class TestController extends Controller
             'password' => Hash::make($request->password),
             'active' => 1,
         ]);
+
+        SendWelcomeEmail::dispatch($user);
 
         if (!$user) {
             return response()->json([
